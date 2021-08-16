@@ -1,18 +1,15 @@
 const { expect } = require("chai");
 
-describe("Greeter", function () {
-  it("Should return the new greeting once it's changed", async function () {
-    const Greeter = await ethers.getContractFactory("Greeter");
-    const greeter = await Greeter.deploy("Hello world!");
-    await greeter.deployed();
+describe("My Token", function () {
+  it("Should return the correct name and symbol", async function () {
+    const tokenName = 'My Token'
+    const tokenSymbol = 'MYTKN'
+    const MyToken = await hre.ethers.getContractFactory("MyToken");
+    const myToken = await MyToken.deploy(tokenName, tokenSymbol);
+    await myToken.deployed();
 
-    expect(await greeter.greet()).to.equal("Hello world!");
-
-    const setGreetingTx = await greeter.setGreeting("Hola mundo!");
-
-    // wait until the transaction is mined
-    await setGreetingTx.wait();
-
-    expect(await greeter.greet()).to.equal("Hola mundo!");
+    expect(await myToken.symbol()).to.eq(tokenSymbol);
+    expect(await myToken.name()).to.eq(tokenName);
+    expect(await myToken.totalSupply()).to.eq(10000);
   });
 });
